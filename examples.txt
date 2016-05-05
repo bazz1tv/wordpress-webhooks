@@ -1,0 +1,109 @@
+examples.txt
+
+comment_postArray
+(
+    [comment_ID] => 60
+    [comment_post_ID] => 169
+    [comment_author] => bazz1
+    [comment_author_email] => mbazzinotti@gmail.com
+    [comment_author_url] => http://bazz1.wordpress.com
+    [comment_author_IP] => 73.167.164.110
+    [comment_date] => 2015-08-06 21:27:09
+    [comment_date_gmt] => 2015-08-06 21:27:09
+    [comment_content] => test
+    [comment_karma] => 0
+    [comment_approved] => 1
+    [comment_agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.130 Safari/537.36
+    [comment_type] =>
+    [comment_parent] => 0
+    [user_id] => 14669659
+    [approval] => 1
+    [hook] => comment_post
+)
+___ALTERNATIVE FIELD VALUES FOR COMMENT__
+[approval] => spam
+
+
+
+publish_postArray
+(
+    [ID] => 169
+    [post_author] => 14669659
+    [post_date] => 2015-08-06 21:25:16
+    [post_date_gmt] => 2015-08-06 21:25:16
+    [post_content] => Title is accessed from track's tag. Number tracks starting from 0
+
+<table>
+<tbody>
+<tr>
+<td>song #</td>
+<td>Title</td>
+<td>Filename</td>
+</tr>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>/a.spc</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>/b.spc</td>
+</tr>
+<tr>
+<td>2</td>
+<td>c</td>
+<td>/c.spc</td>
+</tr>
+</tbody>
+</table>
+    [post_title] => [STD] Playlist GUI
+    [post_excerpt] =>
+    [post_status] => publish
+    [comment_status] => open
+    [ping_status] => open
+    [post_password] =>
+    [post_name] => std-playlist-gui
+    [to_ping] =>
+    [pinged] =>
+    [post_modified] => 2015-08-06 21:25:16
+    [post_modified_gmt] => 2015-08-06 21:25:16
+    [post_content_filtered] => Title is accessed from track's tag. Number tracks starting from 0
+<table>
+<tbody>
+<tr>
+<td>song #</td>
+<td>Title</td>
+<td>Filename</td>
+</tr>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>/a.spc</td>
+</tr>
+<tr>
+<td>1</td>
+<td>b</td>
+<td>/b.spc</td>
+</tr>
+<tr>
+<td>2</td>
+<td>c</td>
+<td>/c.spc</td>
+</tr>
+</tbody>
+</table>
+    [post_parent] => 0
+    [guid] => https://snestracker.wordpress.com/?p=169
+    [menu_order] => 0
+    [post_type] => post
+    [post_mime_type] =>
+    [comment_count] => 0
+    [post_category] => Array
+        (
+            [0] => 217132
+        )
+
+    [post_url] => https://snestracker.wordpress.com/2015/08/06/std-playlist-gui/
+    [hook] => publish_post
+)

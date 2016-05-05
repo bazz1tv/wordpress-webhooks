@@ -1,0 +1,6 @@
+{
+    "require": {
+        "maknz/slack": "^1.7",
+        "sunra/php-simple-html-dom-parser": "^1.5"
+    }
+}

@@ -1,0 +1,2 @@
+don't use wordpress xml-rpc because it requires authentication and write-access to the blog.
+Chrome Extension Postman is good for debuggin POST requests
