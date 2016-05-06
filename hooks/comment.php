@@ -5,61 +5,56 @@ require __DIR__ . '/config.php';
 require __DIR__ . '/utility.php';
 
 /* SUPPORTED 
-'post_author',
-'post_title',
-'post_url',
+'comment_post_ID',
+'comment_content',
+'comment_author',
+'comment_author_email',
+'comment_author_url',
+'approval',   [avoids spam]
 */
 
 /* NOT YET SUPPORTED
-'ID',
-'comment_count',
-'comment_status',
-'guid',
-'menu_order',
-'ping_status',
-'pinged',
+'comment_ID',
+'comment_agent',
+'comment_approved',
 
-'post_category',
-'post_content',
-'post_content_filtered',
-'post_date',
-'post_date_gmt',
-'post_excerpt',
-'post_mime_type',
-'post_modified',
-'post_modified_gmt',
-'post_name',
-'post_parent',
-'post_password',
-'post_status',
+'comment_author_IP',
 
-'post_type',
+'comment_date',
+'comment_date_gmt',
+'comment_karma',
+'comment_parent',
 
-'to_ping',
+'comment_type',
+'user_id'
 */
 
-function new_post($request)
+function new_comment($request)
 {
-	global $SLACK_WEBHOOK_URL;
-	global $defaultSlackSettings;
 
-	$client = new Maknz\Slack\Client($SLACK_WEBHOOK_URL, $defaultSlackSettings);
-	$comment = new WPPost($client, $request/*,$comment_fields*/);
+	if (array_key_exists('approval', $request))
+	{
+		if (strcasecmp($request['approval'], 'spam') == 0)
+		{
+	    	return;	// do not notify Slack of spam comments
+		}
+	}	
+
+	$comment = new WPComment($request);
     $comment->submit();
 }
 
-class WPPost extends WP {
-	public function __construct(&$client, $request)
+class WPComment extends WP {
+	public function __construct($request)
 	{
 		parent::__construct($client);
 
-		if (array_key_exists('post_title', $request) && array_key_exists('post_url', $request))
+		if (array_key_exists('comment_post_ID', $request))
 		{
-			//$this->usePostId($request['post_title']);
-			$this->postUrl = $request['post_url'];
-			$this->postTitle = $request['post_title'];
-			$this->slackAttachment->setTitle("New Wordpress post \"" . slack_link($this->postUrl,$this->postTitle) . "\"");
-			$this->slackAttachment->setFallback("New Wordpress post \"$this->postTitle\n$this->postUrl\"");
+			$this->use_post_id($request['comment_post_ID']);
+
+			$this->slackAttachment->setTitle("New Wordpress comment on \"" . slack_link($this->post_url,$this->post_title) . "\"");
+			$this->slackAttachment->setFallback("New Wordpress comment on \"$this->post_title\n$this->post_url\"");
 		}
 		if (array_key_exists('comment_content', $request))
 		{
@@ -73,7 +68,7 @@ class WPPost extends WP {
 
 			$this->slackFields[] = $field;
 		}
-		if (array_key_exists('post_author', $request))
+		if (array_key_exists('comment_author', $request))
 		{
 			$field = new Maknz\Slack\AttachmentField([]);
 			$field->setTitle("Author");
@@ -108,34 +103,32 @@ class WPPost extends WP {
 		echo print_r($request);
 	}
 
-	private function usePostId($id)
+	private function use_post_id($id)
 	{
 		$this->postId = $id;
-		// setPostUrl()
+		// setpost_url()
 		global $BLOG_URL;
-		$this->postUrl = $BLOG_URL . ?author=//"?p=" . $this->postId;
+		$this->post_url = $BLOG_URL . "?p=" . $this->postId;
 		//
-		$this->setPostTitleFromUrl($this->postUrl);
+		$this->set_post_title_from_url($this->post_url);
 	}
 
-	private function setPostTitleFromUrl($url)
+	private function set_post_title_from_url($url)
 	{
 		// Retrieve the DOM from a given URL
 		$this->html = Sunra\PhpSimple\HtmlDomParser::file_get_html($url);
 		// decode HTML codes in title (ie. &nbsp; from experience)
-		$this->postTitleNoSpecialChars = html_entity_decode($this->html->find('.entry-title',0)->innertext);
+		$this->post_titleNoSpecialChars = html_entity_decode($this->html->find('.entry-title',0)->innertext);
 		// persist only certain HTML codes as per https://api.slack.com/docs/formatting
 		//   http://php.net/manual/en/function.htmlspecialchars.php
-		$this->postTitle = htmlspecialchars($this->postTitleNoSpecialChars, ENT_NOQUOTES | ENT_HTML401);
+		$this->post_title = htmlspecialchars($this->post_titleNoSpecialChars, ENT_NOQUOTES | ENT_HTML401);
 	}
-
+ 
 	var $html;
-	var $postUrl = null;
-	var $postTitle = null;
-	var $postTitleNoSpecialChars;
+	var $post_url = null;
+	var $post_title = null;
+	var $post_titleNoSpecialChars;
 	var $postId = null;
-	var $postAuthorId;
-	var $postAuthor;
 }
 
 ?>
